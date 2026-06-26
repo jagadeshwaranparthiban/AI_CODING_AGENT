@@ -1,17 +1,14 @@
 from fastapi import APIRouter
-from agents.graph import agent
+from agents.runner import AgentRunner
 from uuid import uuid4
 
 router = APIRouter()
+runner = AgentRunner()
 
 @router.post("/generate")
 def generate(payload: dict):
-    result = agent.invoke(
-        {
-            "prompt": payload["prompt"],
-            "project_id": str(uuid4()),
-            "retries": 0
-        }
+    result = runner.run(
+        prompt=payload["prompt"]
     )
 
     return result
