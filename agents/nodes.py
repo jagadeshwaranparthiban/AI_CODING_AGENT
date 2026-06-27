@@ -1,4 +1,4 @@
-from .llm import ask_gemini, ask_json
+from .llm import ask_gemini, ask_structured, ask_json
 from uuid import uuid4
 from tools.file_tools import save_code
 from tools.docker_tools import run_python
@@ -24,10 +24,8 @@ def analyze_goal(state):
     {state["prompt"]}
     """
 
-    result = ask_json(prompt)
-    state["goal"] = GoalAnalysis(
-        **result
-    ).model_dump()
+    result = ask_structured(prompt, GoalAnalysis)
+    state["goal"] = result.model_dump()
     print(f"Analysis took {time.time() - start_time:.2f} seconds")
     print(state["goal"])
     return state
@@ -93,9 +91,9 @@ def planner(state):
     {state["goal"]}
     """
 
-    result = ask_json(prompt)
+    result = ask_structured(prompt, Plan)
     print(f"Planning took {time.time() - start_time:.2f} seconds")
-    state["plan"] = Plan(**result).model_dump()
+    state["plan"] = result.model_dump()
     return state
 
 

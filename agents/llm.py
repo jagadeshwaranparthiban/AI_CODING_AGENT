@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from google import genai
 from dotenv import load_dotenv
 import os
@@ -40,3 +41,17 @@ def ask_json(prompt: str):
         print(text)
 
         raise
+
+
+def ask_structured(prompt: str, schema: Type[BaseModel]):
+
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt,
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": schema
+        }
+    )
+
+    return schema.model_validate_json(response.text)
