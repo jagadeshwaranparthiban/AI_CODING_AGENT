@@ -3,6 +3,9 @@ from .graph import agent
 
 class AgentRunner:
 
+    def __init__(self):
+        self.project_id = str(uuid4())
+    
     def run(self, prompt: str):
         state = {
             "project_id": str(uuid4()),
