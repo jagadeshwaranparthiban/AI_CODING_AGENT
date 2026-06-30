@@ -1,4 +1,5 @@
-from .llm import ask_gemini, ask_structured, ask_json
+#from .llm import ask_gemini, ask_structured, ask_json
+from .bedrock import ask_gemini, ask_structured, ask_json
 from uuid import uuid4
 from tools.file_tools import save_code
 from tools.docker_tools import run_python
