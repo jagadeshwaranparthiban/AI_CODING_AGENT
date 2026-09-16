@@ -5,6 +5,7 @@ class AgentState(TypedDict):
     prompt: str
     project_id: str
     goal: str
+    language: str
     plan: list
     generated_code: str
     file_path: str
