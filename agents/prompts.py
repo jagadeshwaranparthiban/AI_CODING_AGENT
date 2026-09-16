@@ -36,16 +36,18 @@ PLAN_PROMPT = """
     """
 
 GENERATE_CODE_PROMPT = """
-    Generate executable Python code.
+    Generate executable code for the following requirements.
 
     Rules:
-    - Return ONLY raw Python source code.
+    - Return ONLY raw source code.
     - Do NOT use markdown.
-    - Do NOT use ```python.
-    - Do NOT use ``` fences.
+    - Do NOT use code fences.
     - Do NOT include explanations.
-    - The response must be directly writable to a .py file.
+    - The response must be directly writable to a source file.
     - The code must be complete and functional.
+
+    Language:
+    {language}
 
     Goal:
     {goal}
@@ -55,13 +57,19 @@ GENERATE_CODE_PROMPT = """
     """
 
 FIX_CODE_PROMPT = """
-    Fix the following Python code.
+    Fix the following source code based on the execution error.
+
+    Rules:
+    - Return ONLY the complete corrected source code.
+    - Do NOT use markdown.
+    - Do NOT use code fences.
+    - Do NOT include explanations.
+    - Preserve the intended functionality.
+    - Fix the actual execution error.
 
     Code:
     {code}
 
     Error:
     {error}
-
-    Return only fixed code.
     """
