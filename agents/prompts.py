@@ -1,5 +1,5 @@
 ANALYZE_PROMPT = """
-    Analyze the request.
+    Analyze the given request.
 
     Return JSON ONLY.
 
@@ -20,7 +20,7 @@ PLAN_PROMPT = """
 
     Do NOT wrap the response.
 
-    Return EXACTLY this structure:
+    Return EXACTLY in this structure:
 
     {{
     "steps": [
@@ -45,6 +45,7 @@ GENERATE_CODE_PROMPT = """
     - Do NOT use ``` fences.
     - Do NOT include explanations.
     - The response must be directly writable to a .py file.
+    - The code must be complete and functional.
 
     Goal:
     {goal}
@@ -62,5 +63,5 @@ FIX_CODE_PROMPT = """
     Error:
     {error}
 
-    Return only code.
+    Return only fixed code.
     """
