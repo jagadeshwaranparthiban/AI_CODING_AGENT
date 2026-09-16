@@ -5,12 +5,19 @@ client = docker.from_env()
 
 def run_python(file_path):
 
-    file_path = Path(file_path)
+    file_path = Path(file_path).resolve()
+
+    if not file_path.exists():
+        raise FileNotFoundError(
+            f"Python file does not exist: {file_path}"
+        )
+    
+    workspace_dir = file_path.parent
     container = client.containers.run(
         image="python:3.12",
-        command=f"python {file_path.name}",
+        command=["python", f"/app/{file_path.name}"],
         volumes={
-            str(file_path.parent.resolve()): {
+            str(workspace_dir): {
                 "bind": "/app",
                 "mode": "rw"
             }
