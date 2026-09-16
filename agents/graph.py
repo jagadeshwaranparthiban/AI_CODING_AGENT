@@ -5,6 +5,7 @@ from .nodes import *
 
 graph = StateGraph(AgentState)
 
+graph.add_node("validate", validate_state_node)
 graph.add_node("analyze", analyze_goal)
 graph.add_node("plan", planner)
 graph.add_node("generate", generate_code)
@@ -12,8 +13,9 @@ graph.add_node("execute", execute_code)
 graph.add_node("fix", fix_code)
 
 # ENTRY POINT
-graph.add_edge(START, "analyze")
+graph.add_edge(START, "validate")
 
+graph.add_edge("validate", "analyze")
 graph.add_edge("analyze", "plan")
 graph.add_edge("plan", "generate")
 graph.add_edge("generate", "execute")

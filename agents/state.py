@@ -4,9 +4,8 @@ class AgentState(TypedDict):
 
     prompt: str
     project_id: str
-    goal: str
-    language: str
-    plan: list
+    goal: dict
+    plan: dict
     generated_code: str
     file_path: str
     output: str

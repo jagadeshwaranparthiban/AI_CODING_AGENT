@@ -7,6 +7,13 @@ from .prompts import ANALYZE_PROMPT, PLAN_PROMPT, GENERATE_CODE_PROMPT, FIX_CODE
 from tools.code_utils import clean_code
 from .logger import logger
 from .decorators import timed
+from .validation import validate_initial_state
+
+@timed("Validate State")
+def validate_state_node(state):
+    validate_initial_state(state)
+    logger.info("Initial state validated successfully")
+    return state
 
 @timed("Analyze Goal")
 def analyze_goal(state):
@@ -37,7 +44,7 @@ def planner(state):
 @timed("Generate Code")
 def generate_code(state):
 
-    prompt = GENERATE_CODE_PROMPT.format(language=state["language"], goal=state["goal"], plan=state["plan"])
+    prompt = GENERATE_CODE_PROMPT.format(language=state["goal"]["language"], goal=state["goal"], plan=state["plan"])
 
     code = ask_gemini(prompt)
     state["generated_code"] = clean_code(code)
