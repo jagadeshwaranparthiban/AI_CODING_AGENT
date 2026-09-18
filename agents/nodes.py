@@ -1,4 +1,4 @@
-from .bedrock import ask_gemini, ask_structured
+from .bedrock import ask_structured
 from tools.file_tools import save_code
 from tools.docker_tools import run_python
 from .schemas import GoalAnalysis, Plan

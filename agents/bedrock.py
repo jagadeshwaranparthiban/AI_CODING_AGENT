@@ -24,7 +24,7 @@ client = boto3.client(
 )
 
 
-def ask_gemini(prompt: str) -> str:
+def ask_llm(prompt: str) -> str:
     try:
         response = client.converse(
             modelId=MODEL_ID,
