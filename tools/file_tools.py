@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from .workspace import resolve_workspace_path
 
 def save_code(project_id, code):
 
@@ -16,9 +16,9 @@ def save_code(project_id, code):
     file_path.write_text(code)
     return str(file_path)
 
-def read_file(file_path: str) -> str:
+def read_file(project_id: str, file_path: str) -> str:
 
-    path = Path(file_path)
+    path = resolve_workspace_path(project_id, file_path)
 
     if not path.exists():
         raise FileNotFoundError(
@@ -33,9 +33,9 @@ def read_file(file_path: str) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def write_file(file_path: str, content: str) -> str:
+def write_file(project_id: str, file_path: str, content: str) -> str:
 
-    path = Path(file_path)
+    path = resolve_workspace_path(project_id, file_path)
 
     path.parent.mkdir(
         parents=True,
@@ -50,9 +50,9 @@ def write_file(file_path: str, content: str) -> str:
     return str(path.resolve())
 
 
-def list_files(directory: str) -> list[str]:
+def list_files(project_id: str, directory: str) -> list[str]:
 
-    path = Path(directory)
+    path = resolve_workspace_path(project_id, directory)
 
     if not path.exists():
         raise FileNotFoundError(
