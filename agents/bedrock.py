@@ -131,8 +131,8 @@ def ask_with_tools(prompt: str,max_iterations: int = 10):
                 tool_use_id = tool_use["toolUseId"]
                 tool_input = tool_use["input"]
 
-                print(f"Tool requested: {tool_name}")
-                print(f"Tool input: {tool_input}")
+                logger.info("Tool requested: %s", tool_name)
+                logger.info("Tool input: %s", tool_input)
 
                 try:
                     result = execute_tool(
