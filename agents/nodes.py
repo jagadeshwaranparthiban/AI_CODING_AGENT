@@ -1,7 +1,6 @@
 from .bedrock import ask_gemini, ask_structured
 from tools.file_tools import save_code
 from tools.docker_tools import run_python
-import time
 from .schemas import GoalAnalysis, Plan
 from .prompts import ANALYZE_PROMPT, PLAN_PROMPT, GENERATE_CODE_PROMPT, FIX_CODE_PROMPT
 from tools.code_utils import clean_code
