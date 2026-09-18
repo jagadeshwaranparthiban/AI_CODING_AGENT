@@ -81,7 +81,7 @@ def ask_structured(prompt: str, schema: Type[BaseModel]):
         raise LLMError("Failed to generate structured response.") from e
 
 
-def ask_with_tools(prompt: str,max_iterations: int = 10):
+def ask_with_tools(prompt: str, project_id: str, max_iterations: int = 10):
 
     messages = [
         {
@@ -136,6 +136,7 @@ def ask_with_tools(prompt: str,max_iterations: int = 10):
 
                 try:
                     result = execute_tool(
+                        project_id,
                         tool_name,
                         tool_input
                     )
