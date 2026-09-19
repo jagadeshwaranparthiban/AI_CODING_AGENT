@@ -2,7 +2,7 @@ from .bedrock import ask_structured, ask_llm
 from tools.file_tools import save_code
 from tools.docker_tools import run_python
 from .schemas import GoalAnalysis, Plan
-from .prompts import ANALYZE_PROMPT, PLAN_PROMPT, GENERATE_CODE_PROMPT, FIX_CODE_PROMPT
+from .prompts import ANALYZE_PROMPT, PLAN_PROMPT, GENERATE_CODE_PROMPT, FIX_CODE_PROMPT, CODING_AGENT_PROMPT
 from tools.code_utils import clean_code
 from .logger import logger
 from .decorators import timed
@@ -42,37 +42,12 @@ def planner(state):
 
 @timed("Coding Agent")
 def coding_agent(state):
-    prompt = f"""
-    You are an AI coding agent.
-
-    You are working on the project:
-    {state["project_id"]}
-
-    User request:
-    {state["prompt"]}
-
-    Your job is to inspect and modify the project as necessary.
-
-    You have access to filesystem tools.
-
-    Rules:
-    - Use list_files to inspect the project before making assumptions.
-    - Use read_file to inspect existing files when necessary.
-    - Use write_file to create or modify files.
-    - Use workspace-relative paths only.
-    - Do not invent existing files or their contents.
-    - Do not ask the user for the project_id.
-    - The project_id is already provided by the application.
-    - Complete the user's request using the available tools.
-    - Do not merely describe what should be done.
-    - Actually modify the project when modification is required.
-
-    Goal:
-    {state.get("goal", {})}
-
-    Plan:
-    {state.get("plan", {})}
-    """
+    prompt = CODING_AGENT_PROMPT.format(
+        project_id=state["project_id"],
+        user_prompt=state["prompt"],
+        goal=state.get("goal", {}),
+        plan=state.get("plan", {}),
+    )
 
     result = ask_with_tools(
         prompt=prompt,
