@@ -9,7 +9,14 @@ TOOLS = [
     {
         "toolSpec": {
             "name": "read_file",
-            "description": "Read the contents of a file.",
+            "description": (
+                "Read a file from the current project workspace. "
+                "IMPORTANT: file_path MUST be a relative path such as "
+                "'agent_test.py' or 'src/main.py'. "
+                "NEVER use an absolute path such as 'C:/...' or "
+                "'D:/...'. The project workspace is automatically provided "
+                "by the application."
+            ),
             "inputSchema": {
                 "json": {
                     "type": "object",
@@ -27,7 +34,14 @@ TOOLS = [
     {
         "toolSpec": {
             "name": "write_file",
-            "description": "Write content to a file.",
+            "description": (
+                "Write content to a file inside the current project workspace. "
+                "IMPORTANT: file_path MUST be a relative path such as "
+                "'agent_test.py' or 'src/main.py'. "
+                "NEVER use an absolute path. "
+                "The project workspace is automatically provided "
+                "by the application."
+            ),
             "inputSchema": {
                 "json": {
                     "type": "object",
@@ -52,7 +66,12 @@ TOOLS = [
     {
         "toolSpec": {
             "name": "list_files",
-            "description": "List all files inside a directory recursively.",
+            "description": (
+                "List files inside the current project workspace. "
+                "Use a relative directory such as '.' or 'src'. "
+                "Do not use absolute paths. "
+                "Use '.' for the project root."
+            ),
             "inputSchema": {
                 "json": {
                     "type": "object",

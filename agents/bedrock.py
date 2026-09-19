@@ -199,3 +199,16 @@ def ask_with_tools(prompt: str, project_id: str, max_iterations: int = 10):
         f"Tool-calling loop exceeded "
         f"{max_iterations} iterations."
     )
+
+def ask_bedrock_with_tools(messages: list):
+    from .bedrock_tools import TOOLS
+
+    response = client.converse(
+        modelId=MODEL_ID,
+        messages=messages,
+        toolConfig={
+            "tools": TOOLS
+        }
+    )
+
+    return response
