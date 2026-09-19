@@ -12,3 +12,11 @@ class CodeExecutionError(AgentError):
 
 class StateValidationError(AgentError):
     """Raised when agent state is invalid."""
+
+
+class ToolNotFoundError(AgentError):
+    """Raised when a specified tool is not found."""
+
+
+class ToolExecutionError(AgentError):
+    """Raised when a tool fails to execute."""
