@@ -1,4 +1,4 @@
-from .bedrock import ask_structured
+from .bedrock import ask_structured, ask_llm
 from tools.file_tools import save_code
 from tools.docker_tools import run_python
 from .schemas import GoalAnalysis, Plan
@@ -7,6 +7,7 @@ from tools.code_utils import clean_code
 from .logger import logger
 from .decorators import timed
 from .validation import validate_initial_state
+from .bedrock import ask_with_tools
 
 @timed("Validate State")
 def validate_state_node(state):
@@ -39,13 +40,60 @@ def planner(state):
     )
     return state
 
+@timed("Coding Agent")
+def coding_agent(state):
+    prompt = f"""
+    You are an AI coding agent.
+
+    You are working on the project:
+    {state["project_id"]}
+
+    User request:
+    {state["prompt"]}
+
+    Your job is to inspect and modify the project as necessary.
+
+    You have access to filesystem tools.
+
+    Rules:
+    - Use list_files to inspect the project before making assumptions.
+    - Use read_file to inspect existing files when necessary.
+    - Use write_file to create or modify files.
+    - Use workspace-relative paths only.
+    - Do not invent existing files or their contents.
+    - Do not ask the user for the project_id.
+    - The project_id is already provided by the application.
+    - Complete the user's request using the available tools.
+    - Do not merely describe what should be done.
+    - Actually modify the project when modification is required.
+
+    Goal:
+    {state.get("goal", {})}
+
+    Plan:
+    {state.get("plan", {})}
+    """
+
+    result = ask_with_tools(
+        prompt=prompt,
+        project_id=state["project_id"],
+    )
+
+    state["output"] = result
+
+    logger.info(
+        "Coding agent completed for project %s",
+        state["project_id"]
+    )
+
+    return state
 
 @timed("Generate Code")
 def generate_code(state):
 
     prompt = GENERATE_CODE_PROMPT.format(language=state["goal"]["language"], goal=state["goal"], plan=state["plan"])
 
-    code = ask_gemini(prompt)
+    code = ask_llm(prompt)
     state["generated_code"] = clean_code(code)
     logger.info("Generated code with %d characters", len(state["generated_code"]))
     return state
