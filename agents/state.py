@@ -11,3 +11,5 @@ class AgentState(TypedDict):
     output: str
     error: str
     retries: int
+    messages: list
+    agent_done: bool
